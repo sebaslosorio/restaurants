@@ -16,7 +16,7 @@ export default function UserGuest() {
         >
             <Image
                 source={require("../../assets/restaurant-logo.png")}
-                resizeMode="container"
+                resizeMode="contain"
                 style={styles.image}
             />
             <Text style={styles.title}>Consulta tu perfil en Restaurants</Text>
