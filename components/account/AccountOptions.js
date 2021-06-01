@@ -3,10 +3,74 @@ import { StyleSheet, Text, View } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
 import { map } from 'lodash'
 import Modal from '../Modal';
+import ChangeDisplayNameForm from './ChangeDisplayOptions';
+import ChangeEmailForm from './ChangeEmailForm';
+import ChangePasswordForm from './ChangePasswordForm';
 
 export default function AccountOptions({user, toastRef}) {
+    const [showModal, setShowModal] = useState(false)
+    const [renderComponent, setRenderComponent] = useState(null) 
+
+    const generateOptions = ()=> {
+        return [
+            {
+                title : "Cambiar Nombres y Apellidos",
+                iconNameLeft : "account-circle",
+                iconColorLeft : "#a7bfd3",
+                iconNameRight : "chevron-right",
+                iconColorRight : "#a7bfd3",
+                onPress: () => selectedComponent("displayName")
+            },
+            {
+                title : "Cambiar Email",
+                iconNameLeft : "at",
+                iconColorLeft : "#a7bfd3",
+                iconNameRight : "chevron-right",
+                iconColorRight : "#a7bfd3",
+                onPress: () => selectedComponent("email")
+            },
+            {
+                title : "Cambiar Contraseña",
+                iconNameLeft : "lock-reset",
+                iconColorLeft : "#a7bfd3",
+                iconNameRight : "chevron-right",
+                iconColorRight : "#a7bfd3",
+                onPress: () => selectedComponent("password")
+            }
+        ]
+    }
+    
+    const selectedComponent = (key) => {
+        switch (key) {
+            case "displayName":
+                setRenderComponent(
+                <ChangeDisplayNameForm
+                    displayName={user.displayName}
+                    setShowModal={setShowModal}
+                    toastRef={toastRef}
+                />)
+            break;
+            case "email":
+                setRenderComponent(
+                    <ChangeEmailForm
+                        displayName={user.displayName}
+                        setShowModal={setShowModal}
+                        toastRef={toastRef}
+                    />) 
+            break;
+            case "password":
+                setRenderComponent(
+                    <ChangePasswordForm
+                        displayName={user.displayName}
+                        setShowModal={setShowModal}
+                        toastRef={toastRef}
+                    />) 
+            break;
+        }
+        setShowModal(true)
+    }
+
     const menuOptions = generateOptions();
-    const [showModal, setShowModal] = useState(true)
 
     return (
         <View>
@@ -34,47 +98,11 @@ export default function AccountOptions({user, toastRef}) {
                     </ListItem>
                 ))
             }
-            <Modal
-                isVisible={showModal}
-                setVisible={setShowModal}
-            >
-                <Text>Hola Mundo</Text>
+            <Modal isVisible={showModal} setVisible={setShowModal}>
+            { renderComponent }
             </Modal>
         </View>
     )
-}
-
-const selectedComponent = (key) => {
-    console.log(key)
-}
-
-const generateOptions = ()=> {
-    return [
-        {
-            title : "Cambiar Nombres y Apellidos",
-            iconNameLeft : "account-circle",
-            iconColorLeft : "#a7bfd3",
-            iconNameRight : "chevron-right",
-            iconColorRight : "#a7bfd3",
-            onPress: () => selectedComponent("displayName")
-        },
-        {
-            title : "Cambiar Email",
-            iconNameLeft : "at",
-            iconColorLeft : "#a7bfd3",
-            iconNameRight : "chevron-right",
-            iconColorRight : "#a7bfd3",
-            onPress: () => selectedComponent("email")
-        },
-        {
-            title : "Cambiar Contraseña",
-            iconNameLeft : "lock-reset",
-            iconColorLeft : "#a7bfd3",
-            iconNameRight : "chevron-right",
-            iconColorRight : "#a7bfd3",
-            onPress: () => selectedComponent("password")
-        }
-    ]
 }
 
 const styles = StyleSheet.create({
