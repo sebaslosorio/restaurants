@@ -22,7 +22,7 @@ export default function ChangePasswordForm({setShowModal, toastRef}) {
         const resultReauthenticate = await reauthenticate(currentPassword)  
         if (!resultReauthenticate.statusResponse) {
             setLoading(false)
-            setCurrentPassword("Contraseña incorrecta.")
+            setErrorCurrentPassword("Contraseña incorrecta.")
            return
         }
         const resultUpdatePassword = await updatePassword(newPassword)
