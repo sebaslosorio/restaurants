@@ -43,7 +43,7 @@ export const closesession = () => {
     return firebase.auth().signOut()
 }
 
-export const upLoadImage = async (image, path, name) => {
+export const uploadImage = async (image, path, name) => {
     const result = {statusResponse : false, error : null, url : null}
     const ref = firebase.storage().ref(path).child(name)
     const blob = await fileToBlob(image)    
@@ -97,6 +97,17 @@ export const updatePassword = async (password) => {
     const result = { statusResponse : true, error : null }
     try {
         await firebase.auth().currentUser.updatePassword(password)
+    } catch (error) {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result
+}
+
+export const addDocumentWithoutId = async (collection, data) => {
+    const result = { statusResponse : true, error : null }
+    try {
+        await db.collection(collection).add(data)
     } catch (error) {
         result.statusResponse = false
         result.error = error
